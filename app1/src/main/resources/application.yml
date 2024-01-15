@@ -1,0 +1,50 @@
+spring:
+  profiles:
+    active: local
+  messages:
+    basename: messages/messages
+  jpa:
+    open-in-view: false
+server:
+  port: 9966
+  servlet:
+    context-path: /petclinic/
+petclinic:
+  security:
+    enable: false
+logging:
+  level:
+    root: info
+---
+spring:
+  config:
+    activate:
+      on-profile: local
+  sql:
+    init:
+      mode: always
+      schema-locations: classpath*:db/postgresql/initDB.sql
+      data-locations: classpath*:db/postgresql/populateDB.sql
+  datasource:
+    url: jdbc:postgresql://localhost:5432/petclinic
+    username: postgres
+    password: petclinic
+    driver-class-name: org.postgresql.Driver
+  jpa:
+    database: postgresql
+    database-platform: org.hibernate.dialect.PostgreSQLDialect
+    hibernate:
+      ddl-auto: none
+    properties:
+      hibernate:
+        show_sql: true
+        format_sql: true
+        use_sql_comments: true
+        default_batch_fetch_size: 1000
+logging:
+  level:
+    com.example.petclinic: debug
+#    com.github.dockerjava: warn
+#    com.github.dockerjava.zerodep.shaded.org.apache.hc.client5.http.wire: off
+    org.hibernate.sql: debug
+    org.hibernate.type.descriptor.sql: trace
